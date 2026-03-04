@@ -1,0 +1,68 @@
+import java.util.Scanner;
+class Main {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        Reader[] readers = new Reader[5];
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Читатель " + (i + 1));
+            System.out.println("Введите ФИО: ");
+            String FIO = scan.nextLine();
+            System.out.println("Введите номер читательского билета: ");
+            int bilet = scan.nextInt();
+            scan.nextLine();
+            System.out.println("Введите название факультета: ");
+            String facultet = scan.nextLine();
+            System.out.println("Введите дату рождения: ");
+            String date = scan.nextLine();
+            System.out.println("Введите телефон: ");
+            String phone = scan.nextLine();
+            readers[i] = new Reader(FIO, bilet, facultet, date, phone);
+            int vbook = 3;
+            readers[i].takeBook(vbook);
+            readers[i].takeBook("Приключения","Словарь","Энциклопедия");
+            readers[i].returnBook(vbook);
+            readers[i].returnBook("Приключения","Словарь","Энциклопедия");
+        }
+    }
+}
+class Reader {
+    String FIO;
+    int bilet;
+    String facultet;
+    String date;
+    String phone;
+
+    Reader(String FIO, int bilet, String facultet, String date, String phone) {
+        this.FIO = FIO;
+        this.bilet = bilet;
+        this.facultet = facultet;
+        this.date = date;
+        this.phone = phone;
+    }
+    void takeBook(int vbook) {
+        System.out.println(FIO + " взял " + vbook + " книги");
+    }
+    void takeBook(String ...books) {
+        System.out.print(FIO + " взял книги: ");
+        for (int i = 0; i < books.length; i++) {
+            System.out.print(books[i]);
+            if (i < books.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
+    }
+    void returnBook(int vbook) {
+        System.out.println(FIO + " вернул " + vbook + " книги");
+    }
+    void returnBook(String ...books) {
+        System.out.print(FIO + " вернул книги: ");
+        for (int i = 0; i < books.length; i++) {
+            System.out.print(books[i]);
+            if (i < books.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
+    }
+}
