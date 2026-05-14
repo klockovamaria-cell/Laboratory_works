@@ -1,0 +1,80 @@
+import java.io.*;
+import java.util.Scanner;
+class Kalculator implements Serializable {
+    public double x;
+    public double y;
+    public double X;
+    public Kalculator(double x) {
+        this.x = x;
+        this.y = Y();
+        this.X = x;
+    }
+    public double getY() {
+        return y;
+    }
+    public double getX() {
+        return x;
+    }
+    public double Y() {
+        return x - Math.sin(x);
+    }
+    public void saveState(String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(this);
+            System.out.println("Сохранено в файл " + filename);
+        } catch (IOException ex) {
+            System.out.println("Ошибка " + ex.getMessage());
+        }
+    }
+    public static Kalculator loadState(String filename) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            Kalculator obj = (Kalculator) ois.readObject();
+            System.out.println("Загружено из файла " + filename);
+            return obj;
+        } catch (Exception ex) {
+            System.out.println("Ошибка " + ex.getMessage());
+            return null;
+        }
+    }
+    public void Print() {
+        System.out.println("x = " + x);
+        System.out.println("y = " + y);
+        System.out.println("X = " + X);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Kalculator kalculator = null;
+        String filename = "state.dat";
+        System.out.println("Введите число x:");
+        double x = scanner.nextDouble();
+        scanner.nextLine();
+        kalculator = new Kalculator(x);
+        while (true) {
+            System.out.println("Введите команду (save, upload) или новое значение x:");
+            String input = scanner.nextLine();
+            if (input.equals("save")) {
+                kalculator.saveState(filename);
+            } else if (input.equals("upload")) {
+                Kalculator loaded = Kalculator.loadState(filename);
+                if (loaded != null) {
+                    kalculator = loaded;
+                    kalculator.Print();
+                }
+            }
+            else {
+                try {
+                    double newX = Double.parseDouble(input);
+                    kalculator.x = newX;
+                    kalculator.y = kalculator.Y();
+                    System.out.println("Обновлено x = " + newX);
+                    System.out.println("y = " + kalculator.getY());
+                    }
+                catch (Exception ex){
+                    System.out.println(ex.getMessage());
+                }
+                  }
+                    }
+    }
+}
